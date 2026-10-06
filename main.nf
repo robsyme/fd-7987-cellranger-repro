@@ -49,7 +49,30 @@ process UNTAR_REFERENCE {
     """
 }
 
+// One nf-core/scrnaseq sample holding every gene expression lane from every
+// tar, so a single cellranger multi task sees the whole ~3 TB, as in FD-7987.
+process MAKE_SAMPLESHEET {
+    container 'ubuntu:24.04'
+    publishDir params.dest, mode: 'copy'
+
+    input:
+    path listings
+    val dest
+
+    output:
+    path 'samplesheet.csv'
+
+    script:
+    """
+    echo 'sample,fastq_1,fastq_2,feature_type' > samplesheet.csv
+    cat ${listings} | grep '_gex_fastqs/' | grep '_R1_001.fastq.gz\$' | sort | while read f; do
+        echo "fullchip_gex,${dest}/fastq/\$f,${dest}/fastq/\${f/_R1_001/_R2_001},gex"
+    done >> samplesheet.csv
+    """
+}
+
 workflow {
     UNTAR_FASTQS(channel.fromPath(params.source, checkIfExists: true), params.dest)
     UNTAR_REFERENCE(file(params.ref_url), params.dest)
+    MAKE_SAMPLESHEET(UNTAR_FASTQS.out.collect(), params.dest)
 }

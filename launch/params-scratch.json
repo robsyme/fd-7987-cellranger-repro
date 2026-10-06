@@ -1,0 +1,13 @@
+{
+    "input": "s3://scidev-playground-us-west-2/fd-7987/samplesheet.csv",
+    "outdir": "s3://scidev-playground-us-west-2/fd-7987/results/scratch",
+    "aligner": "cellrangermulti",
+    "protocol": "auto",
+    "cellranger_index": "s3://scidev-playground-us-west-2/fd-7987/ref/refdata-gex-GRCh38-2024-A",
+    "skip_cellrangermulti_vdjref": true,
+    "save_align_intermeds": true,
+    "skip_fastqc": true,
+    "skip_cellbender": true,
+    "skip_qcatch": true,
+    "skip_emptydrops": true
+}
