@@ -8,6 +8,5 @@
     "save_align_intermeds": true,
     "skip_fastqc": true,
     "skip_cellbender": true,
-    "skip_qcatch": true,
-    "skip_emptydrops": true
+    "skip_qcatch": true
 }
